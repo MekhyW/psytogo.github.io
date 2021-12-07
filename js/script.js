@@ -1,15 +1,8 @@
 /// Definindo Lista
-Lista = Array.from(window.location.href.split("/"))
+let Lista = Array.from(window.location.href.split("/"))
+//console.log(lista.at(-1))
 
-/// Removendo Pacientes das Telas Pacientes
-console.log(Lista.at(-1))
-
-if(JSON.parse(sessionStorage.getItem("nome")).lenght <1){
-    alu=[]
-    sessionStorage.setItem("nome",JSON.stringify(alu))
-}
-
-if (Lista.at(-1) === "Pacientes.html"){
+if ((Lista[Lista.length -1]) === "Pacientes.html"){
     paciente = document.getElementById("boneco")
     paciente2 = document.getElementById("boneco2")
     paciente3 = document.getElementById("boneco3")
@@ -24,27 +17,42 @@ if (Lista.at(-1) === "Pacientes.html"){
     index = 0
     boneco = 6
     sessionStorage.setItem("boneco", boneco)
-    Texto = document.getElementById("text_pacientes")
-    Texto.textContent = "Agenda Vazia"
+    
+    lista = sessionStorage.getItem("nome")
+    Texto = document.getElementById("text_pacientes")     
+    if(lista === null){      
+        Texto.textContent = "Agenda Vazia"
+    }else{
+       "Texto.textContent = Pacientes do dia:"
+    }
 }
 
-if (Lista.at(-1) === "Adicionar.html"){
+if (Lista[Lista.length -1] === "Adicionar.html"){
     document.addEventListener("DOMContentLoaded", function() {
         
         botao = document.getElementById("botao_ok")
 
         botao.addEventListener("click", function(event){
             // Conteudo da Mensagem
-            event.preventDefault()
-            lista = JSON.parse(sessionStorage.getItem("nome"))
-            console.log(lista)
-            nome = JSON.stringify(lista.push(document.getElementById("Nome_paciente").value))
-            sessionStorage.setItem('nome',nome)
+            //event.preventDefault()
+            txtInput = document.getElementById("Nome_paciente").value
+            lista = sessionStorage.getItem("nome")
+           
+            if(lista === null){
+                sessionStorage.setItem('nome',txtInput+",")
+            }
+            else{
+                lista = lista.split(",")
+                lista.push(txtInput)
+                sessionStorage.setItem('nome',lista.join(","))
+            }
+            
         })
     })
 }
 
-if (Lista.at(-1) === "Pacientes.html"){
+if ((Lista[Lista.length -1]) === "Pacientes.html"){
+
     if(sessionStorage.getItem("nome")=== null){
         console.log("Não Existem Nomes no SessionStorage")
     } else{
@@ -52,25 +60,31 @@ if (Lista.at(-1) === "Pacientes.html"){
     main = document.getElementById("lista_pacientes")
 
     // Criando Estruta de Lista Paciente
-    nome_paciente = sessionStorage.getItem("nome")
-    console.log(nome_paciente)
-    a = document.createElement("a")
-    a.setAttribute("class", "linha alinhador")
-    a.setAttribute("id", "boneco_add")
-    a.setAttribute("href", "Status.html")
+    nome_pacientes = sessionStorage.getItem("nome").split(",")
+    for(nome_paciente of nome_pacientes){
+        if(nome_paciente != ""){
+            a = document.createElement("a")
+            a.setAttribute("class", "linha alinhador")
+            a.setAttribute("id", "boneco_add")
+            a.setAttribute("href", "Status.html")
 
-    img = document.createElement("img")
-    img.setAttribute("src", "../img/Paciente.png")
-    img.setAttribute("alt", "Status do paciente.html")
+            img = document.createElement("img")
+            img.setAttribute("src", "../img/Paciente.png")
+            img.setAttribute("alt", "Status do paciente.html")
 
-    h3 = document.createElement("h3")
-    h3.setAttribute("class", "list_text_big.html")
-    h3.innerHTML = nome_paciente
+            h3 = document.createElement("h3")
+            h3.setAttribute("class", "list_text_big.html")
+            h3.innerHTML = nome_paciente
 
-    a.appendChild(img)
-    a.appendChild(h3)
+            a.appendChild(img)
+            a.appendChild(h3)
 
-    main.appendChild(a)
+            main.appendChild(a)
+        }
+        
+
+    }
+    
     // sessionStorage.clear()
     }
 }
